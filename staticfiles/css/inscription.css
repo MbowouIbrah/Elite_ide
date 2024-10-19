@@ -1,0 +1,155 @@
+/* Variables */
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #e74c3c;
+    --background-color: #f9f9f9;
+    --input-bg: #f0f0f0;
+    --button-hover: #357ABD;
+    --border-radius: 8px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: 0.3s ease;
+}
+
+/* Réinitialisation globale */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Style du body */
+body {
+    background-image: url('../images/bginscription.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 420px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    animation: fadeIn 1s;
+}
+
+/* Animation du conteneur */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Wrapper */
+.form-wrapper {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 70px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+/* Formulaire */
+#registration-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--input-bg);
+    border: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 16px;
+}
+
+/* Effet focus sur les champs de saisie */
+input:focus {
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+}
+
+/* Groupement des boutons */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+/* Boutons */
+button {
+    width: 48%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Bouton Retour */
+.return-button {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+.return-button:hover {
+    background-color: #c0392b;
+}
+
+/* Bouton S'inscrire */
+.submit-button {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.submit-button:hover {
+    background-color: var(--button-hover);
+}
+
+/* Message de succès et erreur */
+.succes-message,
+.error-message {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.succes-message {
+    color: var(--primary-color);
+}
+
+.error-message {
+    color: var(--secondary-color);
+}

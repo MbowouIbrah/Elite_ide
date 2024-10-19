@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil - Prépa Concours IDE</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="">
+                <img src="{% static 'images/logo.png' %}" alt="Logo Prépa Concours IDE" style="max-width: 120px;">
+            </a>
+            <div class="menu">
+                <ul>
+                    <li><a href="">Accueil</a></li>
+                    <li class="has-submenu">Formations
+                        <ul class="submenu">
+                            <li><a href="formation_ide.html">Infirmiers</a></li>
+                            <li><a href="#">Technicien de labo</a></li>
+                            <li><a href="#">Aide-Soignants</a></li>
+                            <li><a href="#">Sage-Femme</a></li>
+                            <li><a href="#">Aide Tech. de labo</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Informations</a></li>
+                    <li><a href="#">À propos</a></li>
+                </ul>
+            </div>
+
+            <div class="compte">
+                {% if user.is_authenticated %}
+                    <div class="user-avatar" onclick="toggleModal()">
+                        {{ user.username|slice:":1" | upper }}
+                    </div>
+                    <div id="user-modal" class="user-modal hidden">
+                        <div class="user-option">
+                            <i class="fas fa-user"></i>
+                            <p>{{ user.username }}</p>
+                        </div>
+
+                        <div class="user-option">
+                            <i class="fas fa-wallet"></i>
+                            <a href="#">Payer une formation</a>
+                        </div>
+
+                        <div class="user-option">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <a href="{% url 'deconnexion' %}">Déconnexion</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'connexion' %}">
+                        <button class="connexion">Connexion</button>
+                    </a>
+                    <a href="{% url 'inscription' %}">
+                        <button class="inscription">Créer compte</button>
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Préparez-vous au concours IDE avec des formations de qualité</h1>
+                <p>Accédez à des cours, des tests et des ressources pour réussir votre examen.</p>
+                <a href="inscription.html">
+                    <button class="cta-button">Commencez votre formation</button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        
+        <div class="footer-item">
+            <img src="{% static 'images/mailicon.png' %}" alt="Email" class="icon">
+            <a href="mailto:Eliteide237prepascouncours.com">Eliteide237prepascouncours.com</a>
+        </div>
+        <div class="footer-item">
+            <img src="{% static 'images/phonicon.png' %}" alt="Téléphone" class="icon">
+            <a href="tel:+237657172412">+237 657 172 412</a>
+        </div>
+        <div class="footer-item">
+            <img src="{% static 'images/whaticon.png' %}" alt="WhatsApp" class="icon">
+            <a href="https://wa.me/237657172412">WhatsApp</a>
+        </div>
+    </footer>
+
+    <script>
+        
+        function toggleModal() {
+            const modal = document.getElementById('user-modal');
+            modal.classList.toggle('visible');
+        }
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('user-modal');
+            const avatar = document.querySelector('.user-avatar');
+
+            if (!modal.contains(event.target) && event.target !== avatar) {
+                modal.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+
+</html>
