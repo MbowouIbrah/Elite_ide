@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['elite-ide.onrender.com', '127.0.0.1']
 
-
+AUTH_USER_MODEL = 'pide.Utilisateur'
 # Application definition
 
 INSTALLED_APPS = [
@@ -121,9 +121,6 @@ USE_TZ = True
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

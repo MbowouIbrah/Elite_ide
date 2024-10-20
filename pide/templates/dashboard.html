@@ -83,24 +83,34 @@
 
                             <p>Promoteur</p>
 
+                        {% elif role == 3%}
+
+                            <p>Administrateur</p>
+
                         {% endif %}
                     </div>
                 </div>
 
-                {% if role == 1%}
+                {% if role == 1 %}
                 
                     <li onclick="showSection('Candidats')">Candidats</li>
                     <li onclick="showSection('Examens')">Examens</li>
             
-                {% elif role == 2%}
+                {% elif role == 2 %}
 
                     <li onclick="showSection('Formateurs')">Formateurs</li>
+                    <li onclick="showSection('Formations')">Formations</li>
                     <li onclick="showSection('Paiements')">Paiements</li>
 
+                {% elif role == 3 %}
+                
+                    <li onclick="showSection('Candidats')">Candidats</li>
+                    <li onclick="showSection('Formateurs')">Formateurs</li>
+                    <li onclick="showSection('Promoteur')">Promoteur</li>
+                
                 {% endif %}
                 
-                <li onclick="showSection('Messages')">Messages</li>
-
+                <li onclick="showSection('')">Messages</li>
 
             </ul>
         </aside>
@@ -181,6 +191,38 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- Section Formations -->
+            <div class="Formations section" style="display: none;">
+                <h2>
+                    Liste des Formations
+                    <i class="fas fa-plus-circle add-icon" title="Ajouter un formateur" onclick="openModal('formation-modal')"></i>
+                </h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Formateur 1</h3>
+                        <p>Spécialité: Mathématiques</p>
+                        <div class="card-actions">
+                            <i class="fas fa-info-circle" title="Informations"></i>
+                            <i class="fas fa-user-slash" title="Suspendre"></i>
+                            <i class="fas fa-trash-alt" title="Supprimer"></i>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Formateur 2</h3>
+                        <p>Spécialité: Physique</p>
+                        <div class="card-actions">
+                            <i class="fas fa-info-circle" title="Informations"></i>
+                            <i class="fas fa-user-slash" title="Suspendre"></i>
+                            <i class="fas fa-trash-alt" title="Supprimer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
     
             <!-- Section Paiements -->
             <div class="Paiements section" style="display: none;">
@@ -203,6 +245,34 @@
             </div>
 
 
+
+             <!-- Section Promoteur -->
+             <div class="Promoteur section">
+                <h2>
+                    Liste des Promoteurs
+                    <i class="fas fa-plus-circle add-icon" title="Ajouter un promoteur" onclick="openModal('promoteur-modal')"></i>
+                </h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Promoteur 1</h3>
+                        <p>Email: candidat1@example.com</p>
+                        <div class="card-actions">
+                            <i class="fas fa-info-circle" title="Informations"></i>
+                            <i class="fas fa-user-slash" title="Suspendre"></i>
+                            <i class="fas fa-trash-alt" title="Supprimer"></i>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Promoteur 2</h3>
+                        <p>Email: candidat2@example.com</p>
+                        <div class="card-actions">
+                            <i class="fas fa-info-circle" title="Informations"></i>
+                            <i class="fas fa-user-slash" title="Suspendre"></i>
+                            <i class="fas fa-trash-alt" title="Supprimer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <!-- Section Messagerie -->
@@ -228,65 +298,144 @@
 
     
             <!-- Modales -->
-            <div id="exam-modal" class="modal">
+
+            <!-- Modale Promoteur -->
+            <div id="promoteur-modal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeModal()">&times;</span>
-                    <h2>Ajouter / Modifier un Examen</h2>
-                    <form id="exam-form">
-                        <label for="exam-title">Titre de l'examen</label>
-                        <input type="text" id="exam-title" placeholder="Titre de l'examen" required>
-    
-                        <label for="exam-type">Type d'examen</label>
-                        <select id="exam-type" required>
-                            <option value="QCM">QCM</option>
-                            <option value="Checkbox">Cases à cocher</option>
-                        </select>
-    
-                        <div id="question-container">
-                            <label>Questions</label>
-                            <div class="question">
-                                <input type="text" placeholder="Question 1" required>
-                                <button type="button" class="remove-question" onclick="removeQuestion(this)">Supprimer</button>
-                            </div>
+                    <h2>Ajouter / Modifier un Promoteur</h2>
+
+                    <form id="promoteur-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                            <input type="text" id="first_name" name="first_name" placeholder="Prénom du formateur" required>
+                            <input type="text" id="last_name" name="last_name" placeholder="Nom du formateur" required>
                         </div>
-    
-                        <button type="button" class="add-question" onclick="addQuestion()">Ajouter une question</button>
+
+                        <div class="form-row">
+                            <input type="email" id="email" name="email" placeholder="Email du formateur" required>
+                            <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" id="password1" name="password1" placeholder="Mot de passe" required>
+                            <input type="password" id="password2" name="password2" placeholder="Confirmez le mot de passe" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="file" id="formateur-image" name="image" accept="image/*">
+                        </div>
+
                         <button type="submit" class="submit-btn">Enregistrer</button>
                     </form>
                 </div>
             </div>
-    
+
+
+
+
+            <!-- Modale Formateur -->
             <div id="formateur-modal" class="modal">
                 <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
+                    <span class="close" onclick="closeModal('formateur-modal')">&times;</span>
                     <h2>Ajouter / Modifier un Formateur</h2>
-                    <form id="formateur-form">
-                        <label for="formateur-name">Nom du formateur</label>
-                        <input type="text" id="formateur-name" placeholder="Nom du formateur" required>
-    
-                        <label for="formateur-image">Image du formateur</label>
-                        <input type="file" id="formateur-image" accept="image/*">
-    
+
+                    <form id="formateur-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                            <input type="text" id="first_name" name="first_name" placeholder="Prénom du formateur" required>
+                            <input type="text" id="last_name" name="last_name" placeholder="Nom du formateur" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="email" id="email" name="email" placeholder="Email du formateur" required>
+                            <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" id="password1" name="password1" placeholder="Mot de passe" required>
+                            <input type="password" id="password2" name="password2" placeholder="Confirmez le mot de passe" required>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="file" id="formateur-image" name="image" accept="image/*">
+                        </div>
+
+                        <div class="formation-row">
+                            <label for="formations">Sélectionnez les formations :</label>
+                            {{ formateur_form.formations }}  <!-- Assurez-vous que cela affiche le champ de sélection -->
+                            <!-- Si cela ne fonctionne pas, vous pouvez essayer ceci : -->
+                            {% for formation in formations %}
+                                <input type="checkbox" name="formations" value="{{ formation.id }}">{{ formation.titre }}<br>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="formateur" value="1">
+
+
                         <button type="submit" class="submit-btn">Enregistrer</button>
                     </form>
                 </div>
             </div>
+
+
+
+
+            <!-- Modale Formation -->
+            <div id="formation-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('formation-modal')">&times;</span>
+                    <h2>Ajouter / Modifier une Formation</h2>
+
+                    <form id="formation-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-row-formation">
+                            <input type="text" id="titre" name="titre" placeholder="Titre de la formation" required>
+                        </div>
+                        <div class="form-row-formation">
+                            <input type="number" id="prix" name="prix" placeholder="Prix" required>
+                        </div>
+                        <div class="form-row-formation">
+                            <textarea id="description" name="description" placeholder="Description de la formation" required></textarea>
+                        </div>
+                        <input type="hidden" name="formation" value="1">
+
+
+                        <button type="submit" class="submit-btn">Enregistrer</button>
+                    </form>
+                </div>
+            </div>
+
+
+
+
     
             <script>
+                // Fonction pour afficher la section sélectionnée
                 function showSection(section) {
+                    // Masquer toutes les sections
                     document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+                    // Afficher la section spécifiée
                     document.querySelector(`.${section}`).style.display = 'block';
                 }
-    
+
+                // Fonction pour ouvrir une modal spécifique
                 function openModal(name) {
+                    // Afficher la modal spécifiée
                     document.getElementById(name).style.display = 'block';
                 }
-    
+
+                // Fonction pour fermer les modals
                 function closeModal() {
-                    document.getElementById('exam-modal').style.display = 'none';
+                    // Masquer toutes les modals
+                    document.getElementById('promoteur-modal').style.display = 'none';
                     document.getElementById('formateur-modal').style.display = 'none';
+                    document.getElementById('formation-modal').style.display = 'none';
                 }
-    
+
+                // Fonction pour ajouter une nouvelle question
                 function addQuestion() {
                     const container = document.getElementById('question-container');
                     const questionCount = container.querySelectorAll('.question').length + 1;
@@ -298,38 +447,45 @@
                     `;
                     container.appendChild(questionDiv);
                 }
-    
+
+                // Fonction pour supprimer une question
                 function removeQuestion(button) {
                     button.parentElement.remove();
                 }
-    
+
+                // Récupérer le rôle de l'utilisateur depuis le template Django
                 var role = "{{ role }}";
-    
+
+                // Initialiser la session en fonction du rôle de l'utilisateur
                 function initSession() {
                     if (role === '1') {
                         showSection('Candidats'); 
                     } else if (role === '2') {
                         showSection('Formateurs'); 
+                    } else if (role === '3') {
+                        showSection('Promoteur'); 
                     }
                 }
-    
+
+                // Événement au chargement de la page
                 window.onload = initSession;
-            </script>
-    
-            <script>
+
+                // Fonction pour basculer l'affichage du modal utilisateur
                 function toggleModal() {
                     const modal = document.getElementById('user-modal');
                     modal.classList.toggle('visible');
                 }
-    
+
+                // Événement pour fermer le modal utilisateur si l'utilisateur clique en dehors
                 window.addEventListener('click', function (event) {
                     const modal = document.getElementById('user-modal');
                     const avatar = document.querySelector('.user-avatar');
-    
+
                     if (!modal.contains(event.target) && event.target !== avatar) {
                         modal.classList.remove('visible');
                     }
                 });
+
             </script>
         </main>
     </div>

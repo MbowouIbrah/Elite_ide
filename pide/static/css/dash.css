@@ -565,103 +565,191 @@ h2{
 }
 
 
-/* Styles pour les modales */
+
+
+/* Style de la modale */
 .modal {
     display: none; /* Caché par défaut */
-    position: fixed; /* Rester au même endroit */
-    z-index: 1000; /* Au-dessus des autres éléments */
+    position: fixed; /* Rester en place */
+    z-index: 1000; /* Au-dessus du contenu */
     left: 0;
     top: 0;
-    width: 100%; /* Pleine largeur */
-    height: 100%; /* Pleine hauteur */
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    width: 100%; /* Largeur complète */
+    height: 100%; /* Hauteur complète */
+    overflow: auto; /* Activer le défilement si nécessaire */
+    background-color: rgba(0, 0, 0, 0.7); /* Fond sombre */
+    animation: fadeIn 0.3s; /* Animation d'apparition */
 }
 
-/* Conteneur de la modale */
 .modal-content {
-    background-color: #fff; /* Fond blanc pour le contenu */
-    margin: 10% auto; /* Espacement vertical et centrer horizontalement */
-    padding: 20px; /* Espacement intérieur */
-    border-radius: 10px; /* Coins arrondis */
+    background-color: #ffffff; /* Fond blanc */
+    margin: 15% auto; /* 15% du haut et centré */
+    padding: 20px;
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre */
     width: 80%; /* Largeur de la modale */
     max-width: 500px; /* Largeur maximale */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre autour de la modale */
 }
 
-/* Styles pour les titres de la modale */
-.modal-content h2 {
-    margin-top: 0; /* Supprimer la marge du haut */
-}
-
-/* Styles de base pour les boutons */
-button {
-    background-color: #007BFF; /* Couleur de fond du bouton */
-    color: white; /* Couleur du texte */
-    border: none; /* Suppression de la bordure par défaut */
-    border-radius: 5px; /* Arrondi des coins */
-    padding: 10px 15px; /* Espacement intérieur */
-    font-size: 16px; /* Taille du texte */
-    cursor: pointer; /* Changement de curseur */
-    transition: background-color 0.3s ease; /* Transition douce pour le changement de couleur */
-    margin-top: 10px; /* Espace au-dessus des boutons */
-}
-
-/* Effet au survol pour tous les boutons */
-button:hover {
-    background-color: #0056b3; /* Couleur au survol */
-}
-
-/* Styles pour les inputs et dropdown */
-input[type="text"], 
-select {
-    width: calc(100% - 30px); /* Largeur de l'input et du dropdown */
-    padding: 10px; /* Espacement intérieur */
-    border: 1px solid #ccc; /* Bordure */
-    border-radius: 5px; /* Arrondi des coins */
-    font-size: 16px; /* Taille du texte */
-    margin-bottom: 15px; /* Espace en dessous */
-    transition: border-color 0.3s; /* Transition douce pour la couleur de la bordure */
-}
-
-/* Changement de couleur de la bordure au focus */
-input[type="text"]:focus,
-select:focus {
-    border-color: #007BFF; /* Couleur de la bordure au focus */
-    outline: none; /* Suppression de l'effet de focus par défaut */
-}
-
-/* Styles pour le conteneur de question */
-#question-container {
-    margin-top: 20px; /* Espace au-dessus du conteneur */
-    
-}
-
-/* Styles pour le bouton supprimer */
-.remove-question {
-    background-color: #dc3545; /* Couleur de fond pour le bouton supprimer */
-}
-
-.remove-question:hover {
-    background-color: #c82333; /* Couleur au survol pour le bouton supprimer */
-}
-
-/* Bouton de fermeture de la modale */
+/* Bouton de fermeture */
 .close {
-    color: #aaa; /* Couleur du texte du bouton de fermeture */
-    float: right; /* Alignement à droite */
+    color: #aaa; /* Couleur du texte */
+    float: right; /* Aligné à droite */
     font-size: 28px; /* Taille du texte */
-    font-weight: bold; /* Épaisseur du texte */
+    font-weight: bold; /* Gras */
 }
 
-/* Effet au survol pour le bouton de fermeture */
 .close:hover,
 .close:focus {
     color: black; /* Couleur au survol */
-    text-decoration: none; /* Suppression de la décoration de texte */
-    cursor: pointer; /* Changement de curseur */
+    text-decoration: none; /* Pas de soulignement */
+    cursor: pointer; /* Curseur de pointeur */
 }
 
-/* Espacement entre le titre et le conteneur des questions */
-.modal-content h2 + #question-container {
-    margin-top: 20px; /* Espace entre le titre et le conteneur */
+/* Style des titres */
+h2 {
+    color: #333; /* Couleur du texte */
+    text-align: center; /* Centré */
+}
+
+/* Style des lignes de formulaire */
+/* Style spécifique pour les champs de formation */
+.form-row-formation {
+    display: flex; /* Flexbox pour un bon alignement */
+    justify-content: space-between; /* Espacement entre les éléments */
+    margin-bottom: 15px; /* Espacement inférieur */
+    width: 100%; /* Assurez-vous que le conteneur utilise toute la largeur */
+}
+
+.form-row-formation input,
+.form-row-formation textarea {
+    width: 100%; /* Largeur complète pour occuper toute la ligne */
+    padding: 10px; /* Espacement intérieur */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    box-sizing: border-box; /* Inclure le padding et la bordure dans la largeur */
+    transition: border-color 0.3s; /* Transition pour la bordure */
+}
+
+.form-row-formation input:focus,
+.form-row-formation textarea:focus {
+    border-color: #007bff; /* Couleur au focus */
+    outline: none; /* Pas de contour par défaut */
+}
+
+/* Les autres règles restent inchangées */
+.form-row {
+    display: flex; /* Flexbox pour un bon alignement */
+    justify-content: space-between; /* Espacement entre les éléments */
+    margin-bottom: 15px; /* Espacement inférieur */
+}
+
+.form-row input {
+    width: 48%; /* Largeur des champs */
+    padding: 10px; /* Espacement intérieur */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 4px; /* Coins arrondis */
+    box-sizing: border-box; /* Inclure le padding et la bordure dans la largeur */
+    transition: border-color 0.3s; /* Transition pour la bordure */
+}
+
+.form-row input:focus {
+    border-color: #007bff; /* Couleur au focus */
+    outline: none; /* Pas de contour par défaut */
+}
+
+/* Style du bouton de soumission */
+.submit-btn {
+    background-color: #007bff; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    padding: 10px 15px; /* Espacement */
+    border: none; /* Pas de bordure */
+    border-radius: 4px; /* Coins arrondis */
+    cursor: pointer; /* Curseur de pointeur */
+    width: 100%; /* Largeur complète */
+    transition: background-color 0.3s; /* Transition pour la couleur de fond */
+}
+
+.submit-btn:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Invisible */
+    }
+    to {
+        opacity: 1; /* Visible */
+    }
+}
+
+
+
+
+/* Style global de la ligne du formulaire */
+.formation-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style du label */
+.formation-row label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+}
+
+/* Conteneur des cases à cocher */
+.formation-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+/* Effet hover pour rendre les cases interactives */
+.formation-checkbox:hover {
+    background-color: #ecf0f1;
+    transform: scale(1.02);
+}
+
+/* Espacement et style des cases à cocher */
+.formation-checkbox input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Effet sur la case cochée */
+.formation-checkbox input[type="checkbox"]:checked {
+    background-color: #3498db;
+    border-color: #2980b9;
+}
+
+/* Style du texte des formations */
+.formation-checkbox label {
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Grille adaptative pour les formations */
+.formations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 10px;
 }
