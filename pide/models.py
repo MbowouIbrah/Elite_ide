@@ -1,4 +1,3 @@
-# models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -25,3 +24,31 @@ class Formation(models.Model):
 
     def __str__(self):
         return self.titre
+
+
+class Examen(models.Model):
+    nom = models.CharField(max_length=100)
+    formation = models.ForeignKey(Formation, on_delete=models.CASCADE, related_name='examens')
+    date = models.DateField()
+    duree = models.IntegerField()  # ou IntegerField() si tu préfères spécifier en minutes
+    nombre_questions = models.PositiveIntegerField(default=0)  # Champ pour le nombre de questions
+
+    def __str__(self):
+        return self.nom
+
+
+class Question(models.Model):
+    examen = models.ForeignKey(Examen, on_delete=models.CASCADE, related_name='questions')
+    intitule = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.intitule
+
+
+class Reponse(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='reponses')
+    intitule = models.CharField(max_length=255)
+    est_correcte = models.BooleanField(default=False)  # pour indiquer si c'est la bonne réponse
+
+    def __str__(self):
+        return self.intitule

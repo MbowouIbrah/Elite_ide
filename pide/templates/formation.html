@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails des Formations - Prépa Concours IDE</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/formation.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">
+                <img src="{% static 'images/logo.png' %}" alt="Logo Prépa Concours IDE" style="max-width: 120px;">
+            </a>
+            <div class="menu">
+                <ul>
+                    <li><a href="{% url 'index' %}">Accueil</a></li>
+                    <li class="has-submenu">Formations
+                        <ul class="submenu">
+                            {% for formation in formations %}
+                            <a href="#" class="formation-link" data-formation-id="{{ formation.id }}">{{ formation.titre }} (prix: {{ formation.prix }} FCFA)</a>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'informations' %}">Informations</a></li>
+                    <li><a href="#">À propos</a></li>
+                </ul>
+            </div>
+
+            <div class="compte">
+                {% if user.is_authenticated %}
+                    <div class="user-avatar" onclick="toggleModal()">
+                        {{ user.username|slice:":1" | upper }}
+                    </div>
+                    <div id="user-modal" class="user-modal hidden">
+                        <div class="user-option">
+                            <i class="fas fa-user"></i>
+                            <p>{{ user.username }}</p>
+                        </div>
+
+                        <div class="user-option">
+                            <i class="fas fa-wallet"></i>
+                            <a href="#">Payer une formation</a>
+                        </div>
+
+                        <div class="user-option">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <a href="{% url 'deconnexion' %}">Déconnexion</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'connexion' %}">
+                        <button class="connexion">Connexion</button>
+                    </a>
+                    <a href="{% url 'inscription' %}">
+                        <button class="inscription">Créer compte</button>
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    
+    <div class="container">
+        <aside class="sidebar">
+            <h2>AIDE-SOIGNANTE(E)</h2>
+            <ul>
+                <li><a href="#cours-non-telechargeables">Cours Non Téléchargeables</a></li>
+                <li><a href="#cours-telechargeables">Cours Téléchargeables</a></li>
+                <li><a href="#tutos">Tutoriels</a></li>
+                <li><a href="#quizzes">Quiz</a></li>
+                <li><a href="#epreuves">Épreuves</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="cours-non-telechargeables" class="content-section">
+                <h2>Cours Non Téléchargeables</h2>
+                <ul>
+                    <li>Cours de Soins Généraux</li>
+                    <li>Cours de Pharmacologie</li>
+                    <li>Cours de Nutrition</li>
+                </ul>
+            </section>
+
+            <section id="cours-telechargeables" class="content-section">
+                <h2>Cours Téléchargeables</h2>
+                <ul>
+                    <li><a href="#">Introduction à l'Anatomie (PDF)</a></li>
+                    <li><a href="#">Bases de la Physiologie (PDF)</a></li>
+                    <li><a href="#">Techniques de Soins (PDF)</a></li>
+                </ul>
+            </section>
+
+            <section id="tutos" class="content-section">
+                <h2>Tutoriels</h2>
+                <ul>
+                    <li><a href="#">Tutoriel sur les Premiers Secours</a></li>
+                    <li><a href="#">Tutoriel sur les Médicaments</a></li>
+                    <li><a href="#">Tutoriel de Communication avec les Patients</a></li>
+                </ul>
+            </section>
+
+            <section id="quizzes" class="content-section">
+                <h2>Quiz</h2>
+                <ul>
+                    <li><a href="#">Quiz sur l'Anatomie</a></li>
+                    <li><a href="#">Quiz sur la Physiologie</a></li>
+                    <li><a href="#">Quiz sur les Médicaments</a></li>
+                </ul>
+            </section>
+
+            <section id="epreuves" class="content-section">
+                <h2>Épreuves</h2>
+                <ul>
+                    <li><a href="#">Épreuve de Soins Infirmiers</a></li>
+                    <li><a href="#">Épreuve de Communication</a></li>
+                    <li><a href="#">Épreuve de Gestion des Urgences</a></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        
+        function toggleModal() {
+            const modal = document.getElementById('user-modal');
+            modal.classList.toggle('visible');
+        }
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('user-modal');
+            const avatar = document.querySelector('.user-avatar');
+
+            if (!modal.contains(event.target) && event.target !== avatar) {
+                modal.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>

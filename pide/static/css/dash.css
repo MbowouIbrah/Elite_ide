@@ -476,6 +476,13 @@ h2{
     gap: 15px; /* Espace entre les icônes */
 }
 
+.card p.description {
+    overflow: hidden;       /* Cache le texte qui déborde */
+    text-overflow: ellipsis; /* Ajoute des points de suspension à la fin */
+    white-space: nowrap;    /* Empêche le retour à la ligne */
+    max-width: 100%;        /* S'assure que le texte ne dépasse pas la largeur de la carte */
+}
+
 .card-actions i {
     font-size: 1.5rem;
     color: #007bff;
@@ -668,6 +675,8 @@ h2 {
     cursor: pointer; /* Curseur de pointeur */
     width: 100%; /* Largeur complète */
     transition: background-color 0.3s; /* Transition pour la couleur de fond */
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .submit-btn:hover {
@@ -752,4 +761,114 @@ h2 {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px;
     margin-top: 10px;
+}
+
+
+
+
+/* Style global pour les lignes de question */
+.question {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Champ de texte pour les questions */
+.question input{
+    flex: 1; /* Le champ occupe tout l’espace disponible */
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.selectFormation{
+    flex: 1; /* Le champ occupe tout l’espace disponible */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+/* Bouton de suppression aligné à droite */
+.question-btn, .question-btn1 {
+    background-color: #dc3545; /* Rouge pour suppression */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.question-btn1{
+    background-color: var(--accent-color);
+    margin-top: 5px;
+}
+
+.question-btn:hover {
+    background-color: #c82333;
+}
+
+
+.inputQuestion{
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+
+/* Conteneur de chaque réponse */
+.response-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* Champ de texte de la réponse */
+.response-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.response-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Checkbox pour marquer comme correcte */
+.correct-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+/* Bouton de suppression */
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
 }

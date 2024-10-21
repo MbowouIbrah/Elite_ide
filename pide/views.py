@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import InscriptionForm, FormateurForm, FormationForm, PromoteurForm
+from .forms import InscriptionForm, FormateurForm, FormationForm, PromoteurForm, ExamenForm, QuestionForm, ReponseForm
 from django.contrib import messages
+from django.forms import modelformset_factory
+from .models import Examen, Question, Reponse, Formation, Utilisateur
+
 
 # Vérifie si l'utilisateur est admin, promoteur ou formateur
 def isAdministration(user):
@@ -16,11 +19,20 @@ def isAdmin(user):
 def isPro(user):
     return user.role == 'promoteur'
 
+# Vérifie si l'utilisateur est formateur
+def isFor(user):
+    return user.role == 'formateur'
+
+
+
 # Vue pour la page d'accueil
 def index(request):
+    context = {
+        'formations': Formation.objects.all(),
+    }
     if request.user.is_authenticated and isAdministration(request.user):
         return redirect('dashboard')  # Redirige vers le dashboard si l'utilisateur est connecté et autorisé
-    return render(request, "index.html")
+    return render(request, "index.html", context)
 
 # Vue pour l'inscription
 def inscription(request):
@@ -35,44 +47,68 @@ def inscription(request):
 
     return render(request, "inscription.html", {'form': form})
 
-# Vue pour le tableau de bord (Dashboard)
 @login_required(login_url="/connexion/")
 @user_passes_test(isAdministration, login_url="/index/")
 def dashboard(request):
-    promoteur_form = PromoteurForm()
-    formateur_form = FormateurForm()
-    formation_form = FormationForm()
+    promoteur_form = PromoteurForm(request.POST or None)
+    formateur_form = FormateurForm(request.POST or None)
+    formation_form = FormationForm(request.POST or None)
+    examen_form = ExamenForm(request.POST or None)
+
+    candidats, formateurs, promoteurs, examens = [], [], [], []
+
     if request.method == 'POST':
-        if isAdmin(request.user):
-            promoteur_form = PromoteurForm(request.POST)
-            if promoteur_form.is_valid():
+        try:
+            if isAdmin(request.user) and promoteur_form.is_valid():
                 promoteur_form.save()
-                return redirect('dashboard')
-
-        elif isPro(request.user):
-            print('promoteur')
-            if 'formateur' in request.POST:
-                formateur_form = FormateurForm(request.POST)
-                print('formateur : ' + str(formateur_form.is_valid()))
-                if formateur_form.is_valid():
+            elif isPro(request.user):
+                if 'formateur' in request.POST and formateur_form.is_valid():
                     formateur_form.save()
-                    return redirect('dashboard')
-            elif 'formation' in request.POST:
-                formation_form = FormationForm(request.POST)
-                print('formation : ' + str(formation_form.is_valid()))
-                if formation_form.is_valid():
+                elif 'formation' in request.POST and formation_form.is_valid():
                     formation_form.save()
-                    return redirect('dashboard')
-        
-    else:
-        promoteur_form = PromoteurForm()
-        formateur_form = FormateurForm()
-        formation_form = FormationForm()
+            elif isFor(request.user) and examen_form.is_valid():
+                examen = examen_form.save(commit=False)
+                examen.save()
+            return redirect('dashboard')
+        except Exception as e:
+            print(f"Erreur lors de la sauvegarde : {e}")
 
-    # Préparation du contexte en fonction du rôle
-    context = {'promoteur_form': promoteur_form, 'formateur_form': formateur_form, 'formation_form': formation_form, 'role': get_user_role_context(request.user)}
+    if isFor(request.user) or isPro(request.user) or isAdmin(request.user):
+        candidats = Utilisateur.objects.filter(role='candidat')
+        examens = get_examens_utilisateur(request.user)
+    if isPro(request.user) or isAdmin(request.user):
+        formateurs = Utilisateur.objects.filter(role="formateur")
+    if isAdmin(request.user):
+        promoteurs = Utilisateur.objects.filter(role="promoteur")
+
+    context = {
+        'promoteur_form': promoteur_form,
+        'formateur_form': formateur_form,
+        'formation_form': formation_form,
+        'examen_form': examen_form,
+        'formations': Formation.objects.all(),
+        'candidats': candidats,
+        'formateurs': formateurs,
+        'promoteurs': promoteurs,
+        'examens': examens,
+        'role': get_user_role_context(request.user)
+    }
 
     return render(request, 'dashboard.html', context)
+
+
+
+# Vue pour récupérer les examens liés aux formations d'un utilisateur
+def get_examens_utilisateur(utilisateur):
+    # Récupérer toutes les formations associées à cet utilisateur
+    formations = utilisateur.formations.all()
+
+    # Récupérer les examens liés à ces formations
+    examens = Examen.objects.filter(formation__in=formations)
+
+    return examens
+
+
 
 # Fonction pour déterminer le rôle à afficher dans le tableau de bord
 def get_user_role_context(user):
@@ -84,6 +120,17 @@ def get_user_role_context(user):
         return 1  # Rôle 1 : Formateur
     else:
         return 0  # Rôle 0 : Autres utilisateurs non autorisés
+
+
+def informations(request):
+
+    return render(request, 'informations.html')
+
+
+@login_required(login_url="/connexion/")
+def formation(request):
+    
+    return render(request, 'formation.html')
 
 # Vue pour la connexion
 def connexion(request):

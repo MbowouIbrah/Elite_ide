@@ -18,14 +18,12 @@
             </a>
             <div class="menu">
                 <ul>
-                    <li><a href="#">Accueil</a></li>
+                    <li><a href="">Accueil</a></li>
                     <li class="has-submenu">Formations
                         <ul class="submenu">
-                            <li><a href="formation_ide.html">Infirmiers</a></li>
-                            <li><a href="#">Technicien de labo</a></li>
-                            <li><a href="#">Aide-Soignants</a></li>
-                            <li><a href="#">Sage-Femme</a></li>
-                            <li><a href="#">Aide Tech. de labo</a></li>
+                            {% for formation in formations %}
+                            <li><a href="#">{{ formation.titre }} (prix: {{ formation.prix }} FCFA)</a></li>
+                        {% endfor %}
                         </ul>
                     </li>
                     <li><a href="#">Informations</a></li>
@@ -71,7 +69,7 @@
             <div class="hero-text">
                 <h1>Préparez-vous au concours IDE avec des formations de qualité</h1>
                 <p>Accédez à des cours, des tests et des ressources pour réussir votre examen.</p>
-                <a href="inscription.html">
+                <a href="{% url 'formation' %}">
                     <button class="cta-button">Commencez votre formation</button>
                 </a>
             </div>

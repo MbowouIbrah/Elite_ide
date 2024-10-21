@@ -1,0 +1,356 @@
+/* Variables */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #e74c3c;
+    --accent-color: #2ecc71;
+    --background-color: #f4f4f4;
+}
+
+/* Style général */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    padding-top: 100px; /* Ajout d'une marge en haut */
+    height: calc(100vh - 100px); /* Ajustement de la hauteur pour compenser la marge */
+}
+
+/* Liens sans soulignement */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* En-tête et menu */
+header {
+    background-color: #2c3e50;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+nav img {
+    height: 50px;
+}
+
+/* Style du menu principal */
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin-left: auto;
+    position: relative;
+}
+
+.menu ul li {
+    position: relative;
+    cursor: pointer;
+    font-weight: 500;
+    color: #ecf0f1; /* Couleur de texte du menu */
+    transition: color 0.3s;
+}
+
+.menu ul li ul li {
+    position: relative;
+    cursor: pointer;
+    font-weight: 500;
+    color: #2c3e50; /* Couleur de texte du menu */
+    transition: color 0.3s;
+}
+
+.menu ul li:hover {
+    color: #1abc9c; /* Couleur au survol */
+}
+
+.menu ul li a {
+    color: inherit;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Couleur au survol */
+    color: #fff; /* Couleur au survol du lien */
+}
+
+/* Style du sous-menu */
+.menu ul .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: block; /* Affichage en bloc pour une seule colonne */
+    background-color: var(--background-color); /* Utilisation de la variable pour la couleur de fond */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+/* Afficher le sous-menu au survol */
+.menu ul li:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Style des éléments du sous-menu */
+.submenu li {
+    padding: 10px 20px;
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    color: var(--primary-color); /* Couleur de texte des éléments du sous-menu (bleu par défaut) */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Couleur au survol des éléments du sous-menu */
+.submenu li:hover {
+    background-color: var(--accent-color); /* Couleur de fond au survol */
+    color: rebeccapurple; /* Couleur de texte au survol (blanc) */
+}
+
+/* Couleur des liens dans le sous-menu */
+.submenu li a {
+    color: inherit; /* Couleur héritée pour les liens */
+}
+
+/* Ajout d'une icône dropdown pour indiquer un sous-menu */
+.menu ul li.has-submenu::after {
+    content: '▼';
+    font-size: 12px;
+    margin-left: 8px;
+    transition: transform 0.3s;
+}
+
+.menu ul li.has-submenu:hover::after {
+    transform: rotate(180deg);
+}
+
+/* Style responsive du menu */
+@media (max-width: 768px) {
+    .menu ul {
+        flex-direction: column;
+        background-color: rgba(44, 62, 80, 0.95);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        display: none;
+    }
+
+    .menu ul.show-menu {
+        display: flex;
+    }
+
+    .menu ul li {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .compte {
+        flex-direction: column;
+    }
+}
+
+/* Style pour le bouton hamburger (menu mobile) */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburger div {
+    width: 25px;
+    height: 3px;
+    background-color: #ecf0f1; /* Couleur des barres du hamburger */
+    transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+        align-items: center;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+/* Animation du bouton hamburger */
+.hamburger.active div:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+}
+
+.hamburger.active div:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active div:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+}
+
+.compte {
+    display: flex;
+    gap: 15px;
+}
+
+.compte button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.compte .connexion {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.compte .connexion:hover {
+    background-color: #2980b9;
+}
+
+.compte .inscription {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.compte .inscription:hover {
+    background-color: #27ae60;
+}
+
+/* Styles de la container */
+/* Styles de la container */
+.container {
+    display: flex;
+    height: 100%; /* Prend toute la hauteur de la page */
+}
+
+/* Styles pour la barre latérale */
+.sidebar {
+    width: 250px; /* Largeur de la barre latérale */
+    background-color: var(--sidebar-bg);
+    padding: 20px;
+    border-right: 1px solid var(--sidebar-border);
+    position: fixed; /* Fixe la barre latérale */
+    height: calc(100vh - 100px); /* Ajuste la hauteur de la barre latérale pour éviter le défilement */
+    overflow-y: auto; /* Permet le défilement si nécessaire */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 10px 10px 0; /* Coins arrondis à droite */
+}
+
+/* Styles pour le sommaire */
+.sidebar h2 {
+    font-size: 18px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    display: block; /* Utilise un bloc pour le lien */
+    padding: 10px 15px;
+    background: #f9f9f9; /* Couleur de fond des liens */
+    color: var(--text-color);
+    border-radius: 5px; /* Coins arrondis pour les liens */
+    transition: background 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: var(--accent-color);
+    color: #fff; /* Texte blanc au survol */
+}
+
+/* Styles pour le contenu principal */
+main {
+    margin-left: 270px; /* Espace pour la barre latérale */
+    padding: 20px;
+    flex: 1; /* Prend tout l'espace restant */
+    overflow-y: auto; /* Permet le défilement du contenu */
+    height: calc(100vh - 100px); /* Ajuste la hauteur du contenu principal */
+}
+
+.content-section {
+    margin-bottom: 30px;
+}
+
+.content-section h2 {
+    font-size: 18px;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.content-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.content-section ul li {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.content-section ul li:hover {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+/* Styles pour les liens */
+a {
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: relative; /* Pour s'assurer qu'il reste en bas */
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

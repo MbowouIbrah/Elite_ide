@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Utilisateur, Formation
+from .models import Utilisateur, Formation, Examen, Question, Reponse
 
 class InscriptionForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -59,3 +59,24 @@ class FormationForm(forms.ModelForm):
     class Meta:
         model = Formation
         fields = ['titre', 'description', 'prix']  # Inclure le prix
+
+
+
+
+
+
+class ExamenForm(forms.ModelForm):
+    class Meta:
+        model = Examen
+        fields = ['nom', 'formation', 'date', 'duree', 'nombre_questions']  # Inclure le champ ici
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['intitule']  # Le champ pour l'intitulé de la question
+
+class ReponseForm(forms.ModelForm):
+    class Meta:
+        model = Reponse
+        fields = ['intitule', 'est_correcte']  # Les champs pour la réponse

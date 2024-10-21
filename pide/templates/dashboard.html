@@ -21,14 +21,14 @@
                     <li><a href="">Dashboard</a></li>
                     <li class="has-submenu">Formations
                         <ul class="submenu">
-                            <li><a href="formation_ide.html">Infirmiers</a></li>
-                            <li><a href="#">Technicien de labo</a></li>
-                            <li><a href="#">Aide-Soignants</a></li>
-                            <li><a href="#">Sage-Femme</a></li>
-                            <li><a href="#">Aide Tech. de labo</a></li>
+                            <li><a href="{% url 'formation' %}">Infirmiers</a></li>
+                            <li><a href="{% url 'formation' %}">Technicien de labo</a></li>
+                            <li><a href="{% url 'formation' %}">Aide-Soignants</a></li>
+                            <li><a href="{% url 'formation' %}">Sage-Femme</a></li>
+                            <li><a href="{% url 'formation' %}">Aide Tech. de labo</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Informations</a></li>
+                    <li><a href="{% url 'informations' %}">Informations</a></li>
                     <li><a href="#">À propos</a></li>
                 </ul>
             </div>
@@ -122,47 +122,52 @@
                     Liste des Candidats
                     <i class="fas fa-plus-circle add-icon" title="Ajouter un candidat" onclick="openModal()"></i>
                 </h2>
+
                 <div class="card-grid">
-                    <div class="card">
-                        <h3>Candidat 1</h3>
-                        <p>Email: candidat1@example.com</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Candidat 2</h3>
-                        <p>Email: candidat2@example.com</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
+                    {% if candidats %}
+                        {% for candidat in candidats %}
+                            <div class="card">
+                                <h3>{{ candidat.first_name }} {{ candidat.last_name }}</h3>  <!-- Affiche le nom du candidat -->
+                                <p>Email: {{ candidat.email }}</p>  <!-- Affiche l'email du candidat -->
+
+                                <div class="card-actions">
+                                    <i class="fas fa-info-circle" title="Informations"></i>
+                                    <i class="fas fa-user-slash" title="Suspendre"></i>
+                                    <i class="fas fa-trash-alt" title="Supprimer"></i>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Aucun candidat trouvé.</p>  <!-- Message si aucun candidat n'est disponible -->
+                    {% endif %}
                 </div>
             </div>
+
     
             <!-- Section Examens -->
             <div class="Examens section" style="display: none;">
                 <h2>
                     Liste des Examens
-                    <i class="fas fa-plus-circle add-icon" title="Ajouter un examen" onclick="openModal('exam-modal')"></i>
+                    <i class="fas fa-plus-circle add-icon" title="Ajouter un examen" onclick="openModal('examen-modal')"></i>
                 </h2>
                 <div class="examens-list">
-                    <div class="examen-card">
-                        <h3>Titre de l'Examen</h3>
-                        <p>Description de l'examen, qui peut être un peu plus longue pour donner des détails.</p>
-                        <div class="examen-actions">
-                            <i class="fas fa-edit action-icon" title="Modifier"></i>
-                            <i class="fas fa-trash action-icon" title="Supprimer"></i>
-                            <i class="fas fa-info-circle action-icon" title="Détails"></i>
+                    {% for examen in examens %}
+                        <div class="examen-card">
+                            <h3>{{ examen.nom }}</h3>
+                            <p>Date : {{ examen.date }}</p>
+                            <p>Formation : {{ examen.formation.titre }}</p>
+                            <div class="examen-actions">
+                                <i class="fas fa-edit action-icon" title="Modifier"></i>
+                                <i class="fas fa-trash action-icon" title="Supprimer"></i>
+                                <i class="fas fa-info-circle action-icon" title="Détails"></i>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Autres cartes d'examen -->
+                    {% empty %}
+                        <p>Aucun examen disponible.</p>
+                    {% endfor %}
                 </div>
             </div>
+
     
             <!-- Section Formateurs -->
             <div class="Formateurs section" style="display: none;">
@@ -171,56 +176,57 @@
                     <i class="fas fa-plus-circle add-icon" title="Ajouter un formateur" onclick="openModal('formateur-modal')"></i>
                 </h2>
                 <div class="card-grid">
-                    <div class="card">
-                        <h3>Formateur 1</h3>
-                        <p>Spécialité: Mathématiques</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
+                    {% for formateur in formateurs %}
+                        <div class="card">
+                            <h3>{{ formateur.first_name }} {{ formateur.last_name }}</h3>
+                            <p>Formations: 
+                                {% for formation in formateur.formations.all %}
+                                    {{ formation.titre }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    Aucune formation associée
+                                {% endfor %}
+                            </p>
+                            <div class="card-actions">
+                                <i class="fas fa-info-circle" title="Informations"></i>
+                                <i class="fas fa-user-slash" title="Suspendre"></i>
+                                <i class="fas fa-trash-alt" title="Supprimer"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <h3>Formateur 2</h3>
-                        <p>Spécialité: Physique</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
+                    {% empty %}
+                        <p>Aucun formateur disponible.</p>
+                    {% endfor %}
                 </div>
             </div>
+
 
 
 
             <!-- Section Formations -->
-            <div class="Formations section" style="display: none;">
-                <h2>
-                    Liste des Formations
-                    <i class="fas fa-plus-circle add-icon" title="Ajouter un formateur" onclick="openModal('formation-modal')"></i>
-                </h2>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>Formateur 1</h3>
-                        <p>Spécialité: Mathématiques</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Formateur 2</h3>
-                        <p>Spécialité: Physique</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
-                </div>
+        <!-- Section Formations -->
+<div class="Formations section" style="display: none;">
+    <h2>
+        Liste des Formations
+        <i class="fas fa-plus-circle add-icon" title="Ajouter une formation" onclick="openModal('formation-modal')"></i>
+    </h2>
+    <div class="card-grid">
+        {% for formation in formations %}
+        <div class="card">
+            <h3>{{ formation.titre }}</h3>
+            <p>Prix: {{ formation.prix }}</p>
+            <div class="card-actions">
+                <i class="fas fa-info-circle" title="Informations"></i>
+                <i class="fas fa-edit" title="Modifier"></i>
+                <i class="fas fa-trash-alt" title="Supprimer"></i>
             </div>
+        </div>
+        {% empty %}
+            <p>Aucune formation disponible.</p>
+        {% endfor %}
+    </div>
+</div>
+ 
+
+
 
 
     
@@ -253,24 +259,22 @@
                     <i class="fas fa-plus-circle add-icon" title="Ajouter un promoteur" onclick="openModal('promoteur-modal')"></i>
                 </h2>
                 <div class="card-grid">
-                    <div class="card">
-                        <h3>Promoteur 1</h3>
-                        <p>Email: candidat1@example.com</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Promoteur 2</h3>
-                        <p>Email: candidat2@example.com</p>
-                        <div class="card-actions">
-                            <i class="fas fa-info-circle" title="Informations"></i>
-                            <i class="fas fa-user-slash" title="Suspendre"></i>
-                            <i class="fas fa-trash-alt" title="Supprimer"></i>
-                        </div>
-                    </div>
+                    {% if promoteurs %}
+                        {% for promoteurs in promoteurs %}
+                            <div class="card">
+                                <h3>{{ promoteurs.first_name }} {{ promoteurs.last_name }}</h3>  <!-- Affiche le nom du candidat -->
+                                <p>Email: {{ promoteurs.email }}</p>  <!-- Affiche l'email du candidat -->
+
+                                <div class="card-actions">
+                                    <i class="fas fa-info-circle" title="Informations"></i>
+                                    <i class="fas fa-user-slash" title="Suspendre"></i>
+                                    <i class="fas fa-trash-alt" title="Supprimer"></i>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Aucun promoteurs trouvé.</p>  <!-- Message si aucun candidat n'est disponible -->
+                    {% endif %}
                 </div>
             </div>
 
@@ -409,87 +413,168 @@
             </div>
 
 
+           <!-- Modale Examen -->
+            <div id="examen-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('examen-modal')">&times;</span>
+                    <h2>Ajouter / Modifier un Examen</h2>
+
+                    <form id="examen-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Affichage des messages d'erreur -->
+                        {% if examen_form.errors %}
+                            <div class="error-messages">
+                                <ul>
+                                    {% for field, errors in examen_form.errors.items %}
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in examen_form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- Étape 1 : Données de l'Examen -->
+                        <div id="step-1">
+                            <div class="form-row-formation">
+                                <input type="text" id="examen_name" name="nom" placeholder="Nom de l'Examen" required>
+                            </div>
+
+                            <div class="form-row-formation">
+                                <select id="formation_select" class="selectFormation" name="formation" required>
+                                    <option value="">Sélectionnez une formation</option>
+                                    {% for formation in formations %}
+                                        <option value="{{ formation.id }}">{{ formation.titre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-row-formation">
+                                <input type="number" id="duration" name="duree" placeholder="Durée (minutes)" required>
+                            </div>
+
+                            <div class="form-row-formation">
+                                <input type="date" id="exam_date" name="date" required>
+                            </div>
+
+                            <!-- Nouveau Champ : Nombre de Questions -->
+                            <div class="form-row-formation">
+                                <input 
+                                    type="number" 
+                                    id="nombre_questions" 
+                                    name="nombre_questions" 
+                                    placeholder="Nombre de Questions" 
+                                    min="1" 
+                                    required>
+                            </div>
+
+                            <button type="button" class="submit-btn" onclick="submitExam()">Enregistrer</button>
+                        </div>
+
+                        <!-- Étape 2 : Ajout des Questions et Réponses
+                        <div id="step-2" style="display: none;">
+                            <div id="question-container"></div>
+
+                            <button type="button" class="question-btn1" onclick="addQuestion()">Ajouter une Question</button>
+
+                            <div class="button-group">
+                                <button type="button" class="submit-btn" onclick="previousStep(2)">Précédent</button>
+                                <button type="button" class="submit-btn" onclick="submitExam()">Valider</button>
+                            </div>
+                        </div> -->
+                    </form>
+                </div>
+            </div>
 
 
-    
-            <script>
-                // Fonction pour afficher la section sélectionnée
-                function showSection(section) {
-                    // Masquer toutes les sections
-                    document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
-                    // Afficher la section spécifiée
-                    document.querySelector(`.${section}`).style.display = 'block';
-                }
 
-                // Fonction pour ouvrir une modal spécifique
-                function openModal(name) {
-                    // Afficher la modal spécifiée
-                    document.getElementById(name).style.display = 'block';
-                }
 
-                // Fonction pour fermer les modals
-                function closeModal() {
-                    // Masquer toutes les modals
-                    document.getElementById('promoteur-modal').style.display = 'none';
-                    document.getElementById('formateur-modal').style.display = 'none';
-                    document.getElementById('formation-modal').style.display = 'none';
-                }
 
-                // Fonction pour ajouter une nouvelle question
-                function addQuestion() {
-                    const container = document.getElementById('question-container');
-                    const questionCount = container.querySelectorAll('.question').length + 1;
-                    const questionDiv = document.createElement('div');
-                    questionDiv.classList.add('question');
-                    questionDiv.innerHTML = `
-                        <input type="text" placeholder="Question ${questionCount}" required>
-                        <button type="button" class="remove-question" onclick="removeQuestion(this)">Supprimer</button>
-                    `;
-                    container.appendChild(questionDiv);
-                }
-
-                // Fonction pour supprimer une question
-                function removeQuestion(button) {
-                    button.parentElement.remove();
-                }
-
-                // Récupérer le rôle de l'utilisateur depuis le template Django
-                var role = "{{ role }}";
-
-                // Initialiser la session en fonction du rôle de l'utilisateur
-                function initSession() {
-                    if (role === '1') {
-                        showSection('Candidats'); 
-                    } else if (role === '2') {
-                        showSection('Formateurs'); 
-                    } else if (role === '3') {
-                        showSection('Promoteur'); 
-                    }
-                }
-
-                // Événement au chargement de la page
-                window.onload = initSession;
-
-                // Fonction pour basculer l'affichage du modal utilisateur
-                function toggleModal() {
-                    const modal = document.getElementById('user-modal');
-                    modal.classList.toggle('visible');
-                }
-
-                // Événement pour fermer le modal utilisateur si l'utilisateur clique en dehors
-                window.addEventListener('click', function (event) {
-                    const modal = document.getElementById('user-modal');
-                    const avatar = document.querySelector('.user-avatar');
-
-                    if (!modal.contains(event.target) && event.target !== avatar) {
-                        modal.classList.remove('visible');
-                    }
-                });
-
-            </script>
         </main>
     </div>
     
+    
+
+    <script>
+        // Fonction pour afficher la section sélectionnée
+        function showSection(section) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+            // Afficher la section spécifiée
+            document.querySelector(`.${section}`).style.display = 'block';
+        }
+
+        // Fonction pour ouvrir une modal spécifique
+        function openModal(name) {
+            // Afficher la modal spécifiée
+            document.getElementById(name).style.display = 'block';
+        }
+
+        // Fonction pour fermer les modals
+        function closeModal() {
+            // Masquer toutes les modals
+            document.getElementById('promoteur-modal').style.display = 'none';
+            document.getElementById('formateur-modal').style.display = 'none';
+            document.getElementById('formation-modal').style.display = 'none';
+        }
+
+
+        // Récupérer le rôle de l'utilisateur depuis le template Django
+        var role = "{{ role }}";
+
+        // Initialiser la session en fonction du rôle de l'utilisateur
+        function initSession() {
+            if (role === '1') {
+                showSection('Candidats'); 
+            } else if (role === '2') {
+                showSection('Formateurs'); 
+            } else if (role === '3') {
+                showSection('Promoteur'); 
+            }
+        }
+
+        // Événement au chargement de la page
+        window.onload = initSession;
+
+        // Fonction pour basculer l'affichage du modal utilisateur
+        function toggleModal() {
+            const modal = document.getElementById('user-modal');
+            modal.classList.toggle('visible');
+        }
+
+        // Événement pour fermer le modal utilisateur si l'utilisateur clique en dehors
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('user-modal');
+            const avatar = document.querySelector('.user-avatar');
+
+            if (!modal.contains(event.target) && event.target !== avatar) {
+                modal.classList.remove('visible');
+            }
+        });
+
+
+        
+        // Fonction pour fermer la modale
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+
+        function removeElement(button) {
+            button.parentElement.remove();
+        }
+
+        function submitExam() {
+            document.getElementById('examen-form').submit();
+        }
+
+
+    </script>
+
     
     
 </body>
